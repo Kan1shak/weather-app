@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* filter: blur(5px); */
+    /* -webkit-filter: blur(5px); */
+    opacity: 1;
+    z-index: -1;
+    position: absolute;
+    filter: blur(5px) url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="a"><feComponentTransfer><feFuncA type="linear" slope="10"/></feComponentTransfer></filter>#a');
+}
+
+.bg-image.previous {
+    opacity: 0;
+    z-index: -2;
+}
+
+.main-container {
+    user-select: none;
+}
+
+.fade-out {
+    animation: fade 1s 1 ;
+}
+
+
+@keyframes fade {
+	0% {
+		opacity: 1;
+	}
+	25% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
