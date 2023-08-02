@@ -1,5 +1,6 @@
 import addSeconds from 'date-fns/addSeconds'
 import delpoyToast from './toast';
+import { showLoadingSpinner } from './displayController';
 
 const weatherApi = (() =>{
     const API_KEY = 'a669c41a379a2268b8a899d5ae1e5b3f';
@@ -71,6 +72,7 @@ const weatherApi = (() =>{
     const getWeatherData = async (location) => {
         // eslint-disable-next-line no-useless-catch
         try {
+            showLoadingSpinner();
             const coords = await getCoords(location);
             const weather = getWeather(coords);
             const pollution = getPollution(coords);

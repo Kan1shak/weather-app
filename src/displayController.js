@@ -3,71 +3,71 @@ import format from "date-fns/format";
 // Container for the weather data
 const weatherContainer = document.querySelector('.weather-container');
 
-const updateBg = (data) => {
+function selectImage (weatherCondition,aqi) {
+    if (aqi > 4) {
+        return 'smoke';
+    }
+    switch (weatherCondition) {
+        case 'clear sky':
+            return 'clearsky';
+        case 'few clouds':
+            return 'partlycloudy';
+        case 'scattered clouds':
+            return 'partlycloudy';
+        case 'broken clouds':
+            return 'cloudy';
+        case "overcast clouds":
+            return 'cloudy';
+        case 'shower rain':
+            return 'drizzle';
+        case 'rain':
+            return 'rain';
+        case 'light rain':
+            return 'drizzle';
+        case 'moderate rain':
+            return 'drizzle';
+        case 'heavy intensity rain':
+            return 'rain';
+        case 'very heavy rain':
+            return 'rain';
+        case 'extreme rain':
+            return 'rain';
+        case 'freezing rain':
+            return 'sleet';
+        case 'light intensity shower rain':
+            return 'drizzle';
+        case 'heavy intensity shower rain':
+            return 'rain';
+        case 'ragged shower rain':
+            return 'rain';
+        case 'thunderstorm with light rain':
+            return 'thunderstorm';
+        case 'thunderstorm with rain':
+            return 'thunderstorm';
+        case 'thunderstorm with heavy rain':
+            return 'thunderstorm';
+        case 'light thunderstorm':
+            return 'thunderstorm';
+        case 'thunderstorm':
+            return 'thunderstorm';
+        case 'snow':
+            return 'snow';
+        case 'mist':
+            return 'mist';
+        case 'haze':
+            return 'haze';
+        default:
+            return 'clearsky';
+    }
+}
+function createImage (src) {
+    const img = document.createElement('img');
+    img.classList.add('bg-image');
+    img.src = `./images/${src}.jpg`;
+    return img;
+}
+const updateBg = (newImage) => {
     const imgContainer = document.querySelector('.bg-container');
-    function createImage (src) {
-        const img = document.createElement('img');
-        img.classList.add('bg-image');
-        img.src = `./images/${src}.jpg`;
-        return img;
-    }
-    function selectImage (weatherCondition,aqi) {
-        if (aqi > 4) {
-            return 'smoke';
-        }
-        switch (weatherCondition) {
-            case 'clear sky':
-                return 'clearsky';
-            case 'few clouds':
-                return 'partlycloudy';
-            case 'scattered clouds':
-                return 'partlycloudy';
-            case 'broken clouds':
-                return 'cloudy';
-            case "overcast clouds":
-                return 'cloudy';
-            case 'shower rain':
-                return 'drizzle';
-            case 'rain':
-                return 'rain';
-            case 'light rain':
-                return 'drizzle';
-            case 'moderate rain':
-                return 'drizzle';
-            case 'heavy intensity rain':
-                return 'rain';
-            case 'very heavy rain':
-                return 'rain';
-            case 'extreme rain':
-                return 'rain';
-            case 'freezing rain':
-                return 'sleet';
-            case 'light intensity shower rain':
-                return 'drizzle';
-            case 'heavy intensity shower rain':
-                return 'rain';
-            case 'ragged shower rain':
-                return 'rain';
-            case 'thunderstorm with light rain':
-                return 'thunderstorm';
-            case 'thunderstorm with rain':
-                return 'thunderstorm';
-            case 'thunderstorm with heavy rain':
-                return 'thunderstorm';
-            case 'light thunderstorm':
-                return 'thunderstorm';
-            case 'thunderstorm':
-                return 'thunderstorm';
-            case 'snow':
-                return 'snow';
-            case 'mist':
-                return 'mist';
-            case 'haze':
-                return 'haze';
-            default:
-                return 'clearsky';
-        }
-    }
     function switchImage(){
         try {
             document.querySelector('.previous').remove();
@@ -75,7 +75,6 @@ const updateBg = (data) => {
             // console.log('No previous image');
         }   
         const prevImage = imgContainer.querySelector('.bg-image')
-        const newImage = createImage(selectImage(data.weatherCondition.description,data.aqi));
         imgContainer.appendChild(newImage);
         prevImage.style.zIndex = 1;
 
@@ -84,17 +83,40 @@ const updateBg = (data) => {
 
     };
     if (imgContainer.childElementCount >= 1) {
-        switchImage();
+        switchImage(newImage);
     } else {
-        imgContainer.appendChild(createImage(selectImage(data.weatherCondition.description,data.aqi)));
+        imgContainer.appendChild(newImage);
     }
 }
 
-const updateWeather = (data) => {
+const showLoadingSpinner = () => {
+        // Clearing weather container
+        weatherContainer.textContent = '';
+        // Show the loading spinner
+        const loadingSpinner = document.querySelector('.lds-ring');
+        loadingSpinner.style.display = 'inline-block';
+}
+
+const removeLoadingSpinner = () => {
+    // Hide the loading spinner
+    const loadingSpinner = document.querySelector('.lds-ring');
+    loadingSpinner.style.display = 'none';
+}
+
+const updateWeather = async (data) => {
     // function to capitalize first letter of a string
-    const capitalize = s => s && s[0].toUpperCase() + s.slice(1)
-    // Clearing weather container
-    weatherContainer.textContent = '';
+    const capitalize = s => s && s[0].toUpperCase() + s.slice(1);
+    // Loading background image
+    const newImage = createImage(selectImage(data.weatherCondition.description,data.aqi));
+    const imageLoaded = new Promise((resolve) => {
+        newImage.addEventListener('load', () => {
+            resolve();
+        })
+    });
+    // Wait for the image to load before updating the weather data
+    await imageLoaded;
+    // update background image
+    updateBg(newImage);
     // Convert country code to country name
     const regionNames = new Intl.DisplayNames(
         ['en'], {type: 'region'}
@@ -196,9 +218,9 @@ const updateWeather = (data) => {
     weatherContainer.appendChild(heading);
     weatherContainer.appendChild(weatherBasicData);
     weatherContainer.appendChild(moreWeatherData);
-
-    // update background image
-    updateBg(data);
+    // Hide the loading spinner
+    removeLoadingSpinner();
 }
 
 export default updateWeather;
+export {showLoadingSpinner};
