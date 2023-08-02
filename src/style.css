@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 .container {
     width: 100vw;
@@ -12,6 +13,34 @@
     position: relative;
 }
 
+h2 {
+    font-size: 4rem;
+    font-weight: 400;
+    color: #fff;
+}
+
+h2 + h3 {
+    font-size: 2rem;
+    font-weight: 400;
+    color: #cecece;
+}
+
+h2.temperature {
+    display: inline;
+}
+
+h3 {
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+}
+
+h4:first-child {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #cecece;
+}
+
 .bg-image {
     width: 100%;
     height: 100%;
@@ -20,7 +49,7 @@
     /* -webkit-filter: blur(5px); */
     opacity: 1;
     z-index: -1;
-    position: absolute;
+    position: fixed;
     filter: blur(5px) url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="a"><feComponentTransfer><feFuncA type="linear" slope="10"/></feComponentTransfer></filter>#a');
 }
 
@@ -29,7 +58,7 @@
     z-index: -2;
 }
 
-.main-container {
+.bg-container {
     user-select: none;
 }
 
@@ -37,6 +66,156 @@
     animation: fade 1s 1 ;
 }
 
+.text-container {
+    width: 100%;
+    height: 100%;
+    padding: 2rem 8vw;
+    display: grid;
+    justify-items: center;
+    position: absolute;
+    z-index: 1;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3fr;
+    text-align: center;
+    background-color: rgba(6, 6, 6, 0.15);
+
+}
+
+.search-container {
+    grid-row: 1 / 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.weather-container {
+    grid-row: 2 / 3;
+    display: grid;
+    justify-content: center;
+    align-items: center;    
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: 1fr 3fr;
+}
+
+.heading {
+    grid-row: 1 / 2;
+    grid-column: 1 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.temp-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.temp-icon-container img{
+    height: 8rem;
+}
+
+.feels-like {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #cecece;
+}
+
+.weather-basic-data {
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start ;
+    flex-direction: column;
+}
+
+.more-weather-data {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+[type="search"] {
+    width: 100%;
+    padding: 0rem 2rem;
+    border: none;
+    border-radius: 2rem;
+    outline: none;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #000;
+    background-color: #ffffff00;
+    transition: all 0.3s ease-in-out;
+}
+
+[type="search"]::placeholder {
+    color: #2b2b2b;
+}
+
+[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    background-image: url(../dist/images/cancel.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.search-btn {
+    padding: 0.75rem 0.75rem;
+    border: none;
+    border-radius: 2rem;
+    outline: none;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff00;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.search-btn span {
+    font-size: 2.5rem;
+}
+
+.search-container {
+    max-height: 5rem;
+    padding: 0rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2rem;
+    background-color:#ffffff00;
+    transition: all 0.2s ease-in-out;
+}
+
+.search-container:hover {
+    background-color: #ffffff22;
+}
+
+.search-btn:hover {
+    background-color: #ffffff22;
+}
 
 @keyframes fade {
 	0% {

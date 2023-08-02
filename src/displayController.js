@@ -3,14 +3,108 @@ import format from "date-fns/format";
 // Container for the weather data
 const weatherContainer = document.querySelector('.weather-container');
 
+const updateBg = (data) => {
+    const imgContainer = document.querySelector('.bg-container');
+    function createImage (src) {
+        const img = document.createElement('img');
+        img.classList.add('bg-image');
+        img.src = `./images/${src}.jpg`;
+        return img;
+    }
+    function selectImage (weatherCondition,aqi) {
+        if (aqi > 4) {
+            return 'smoke';
+        }
+        switch (weatherCondition) {
+            case 'clear sky':
+                return 'clearsky';
+            case 'few clouds':
+                return 'partlycloudy';
+            case 'scattered clouds':
+                return 'partlycloudy';
+            case 'broken clouds':
+                return 'cloudy';
+            case "overcast clouds":
+                return 'cloudy';
+            case 'shower rain':
+                return 'drizzle';
+            case 'rain':
+                return 'rain';
+            case 'light rain':
+                return 'drizzle';
+            case 'moderate rain':
+                return 'drizzle';
+            case 'heavy intensity rain':
+                return 'rain';
+            case 'very heavy rain':
+                return 'rain';
+            case 'extreme rain':
+                return 'rain';
+            case 'freezing rain':
+                return 'sleet';
+            case 'light intensity shower rain':
+                return 'drizzle';
+            case 'heavy intensity shower rain':
+                return 'rain';
+            case 'ragged shower rain':
+                return 'rain';
+            case 'thunderstorm with light rain':
+                return 'thunderstorm';
+            case 'thunderstorm with rain':
+                return 'thunderstorm';
+            case 'thunderstorm with heavy rain':
+                return 'thunderstorm';
+            case 'light thunderstorm':
+                return 'thunderstorm';
+            case 'thunderstorm':
+                return 'thunderstorm';
+            case 'snow':
+                return 'snow';
+            case 'mist':
+                return 'mist';
+            case 'haze':
+                return 'haze';
+            default:
+                return 'clearsky';
+        }
+    }
+    function switchImage(){
+        try {
+            document.querySelector('.previous').remove();
+        } catch (error) {
+            // console.log('No previous image');
+        }   
+        const prevImage = imgContainer.querySelector('.bg-image')
+        const newImage = createImage(selectImage(data.weatherCondition.description,data.aqi));
+        imgContainer.appendChild(newImage);
+        prevImage.style.zIndex = 1;
+
+        prevImage.classList.add('fade-out');
+        prevImage.classList.add('previous');
+
+    };
+    if (imgContainer.childElementCount >= 1) {
+        switchImage();
+    } else {
+        imgContainer.appendChild(createImage(selectImage(data.weatherCondition.description,data.aqi)));
+    }
+}
+
 const updateWeather = (data) => {
+    // function to capitalize first letter of a string
+    const capitalize = s => s && s[0].toUpperCase() + s.slice(1)
     // Clearing weather container
     weatherContainer.textContent = '';
+    // Convert country code to country name
+    const regionNames = new Intl.DisplayNames(
+        ['en'], {type: 'region'}
+      );
 
     // Creating heading
     const location = document.createElement('h2');
     location.classList.add('location');
-    location.textContent = `${data.locationClean}`;
+    const locationSplitted = data.locationClean.split(',');
+    location.textContent = `${locationSplitted[0]}, ${regionNames.of(locationSplitted[1])}`;
     // Creating current time
     const currentTime = document.createElement('h3');
     currentTime.classList.add('current-time');
@@ -25,15 +119,20 @@ const updateWeather = (data) => {
     // Creating weather condition
     const weatherCondition = document.createElement('h3');
     weatherCondition.classList.add('weather-condition');
-    weatherCondition.textContent = `${data.weatherCondition.description.toUpperCase()}`;
+    weatherCondition.textContent = `${data.weatherCondition.description.split(' ').map(capitalize).join(' ')}`;
     // Creating weather icon
     const weatherIcon = document.createElement('img');
     weatherIcon.classList.add('weather-icon');
-    weatherIcon.src = `http://openweathermap.org/img/wn/${data.weatherCondition.icon}.png`;
+    weatherIcon.src = `http://openweathermap.org/img/wn/${data.weatherCondition.icon}@4x.png`;    
     // Creating temperature
     const temperature = document.createElement('h2');
     temperature.classList.add('temperature');
     temperature.textContent = `${Math.round(data.mainData.temp)}°C`;
+    // creating container for weather icon and temperature
+    const tempIconContainer = document.createElement('div');
+    tempIconContainer.classList.add('temp-icon-container');
+    tempIconContainer.appendChild(weatherIcon);
+    tempIconContainer.appendChild(temperature);
     // Creating feels like
     const feelsLike = document.createElement('h3');
     feelsLike.classList.add('feels-like');
@@ -43,9 +142,8 @@ const updateWeather = (data) => {
     const weatherBasicData = document.createElement('div');
     weatherBasicData.classList.add('weather-basic-data');
     // appending weather basic data to weather container
+    weatherBasicData.appendChild(tempIconContainer);
     weatherBasicData.appendChild(weatherCondition);
-    weatherBasicData.appendChild(weatherIcon);
-    weatherBasicData.appendChild(temperature);
     weatherBasicData.appendChild(feelsLike);
 
     // create container for more weather data
@@ -98,6 +196,9 @@ const updateWeather = (data) => {
     weatherContainer.appendChild(heading);
     weatherContainer.appendChild(weatherBasicData);
     weatherContainer.appendChild(moreWeatherData);
+
+    // update background image
+    updateBg(data);
 }
 
 export default updateWeather;
