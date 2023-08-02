@@ -223,4 +223,4 @@ const updateWeather = async (data) => {
 }
 
 export default updateWeather;
-export {showLoadingSpinner};
+export {showLoadingSpinner, removeLoadingSpinner};
