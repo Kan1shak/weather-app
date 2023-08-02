@@ -37,17 +37,21 @@ const weatherApi = (() =>{
     }
 
     function cleanResponse(weather,pollution){
+        const adjustTimeZone = (date,timezone) => {
+            const dateAdjusted = addSeconds(addSeconds(date,timezone),date.getTimezoneOffset() * 60);
+            return dateAdjusted;
+        }
         const coordinatesClean = weather.coord;
         const weatherCondition = weather.weather[0];
         const mainData = weather.main;
         const locationClean = `${coordinates.name},${coordinates.country}`;
         const {country} = weather.sys;
         const {timezone} = weather;
-        const date = new Date();
-        const dateAdjusted = addSeconds(addSeconds(date,timezone),date.getTimezoneOffset() * 60);
-        const {sunrise} = weather.sys;
-        const {sunset} = weather.sys;
-        const  {aqi} = pollution.list[0].main;
+        const dateAdjusted = adjustTimeZone(new Date(),timezone);
+        const sunrise = adjustTimeZone(new Date(weather.sys.sunrise * 1000),timezone);
+        const sunset = adjustTimeZone(new Date(weather.sys.sunset * 1000),timezone);
+        const {aqi} = pollution.list[0].main;
+        const rainChance = weather.clouds.all; 
         return {
             coords : coordinatesClean,
             weatherCondition,
@@ -58,7 +62,8 @@ const weatherApi = (() =>{
             timezone,
             sunrise,
             sunset,
-            aqi
+            aqi,
+            rainChance,
         }
     }
 
