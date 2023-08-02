@@ -1,4 +1,5 @@
 import addSeconds from 'date-fns/addSeconds'
+import delpoyToast from './toast';
 
 const weatherApi = (() =>{
     const API_KEY = 'a669c41a379a2268b8a899d5ae1e5b3f';
@@ -75,6 +76,7 @@ const weatherApi = (() =>{
             const pollution = getPollution(coords);
             return Promise.all([weather,pollution]).then((values) => cleanResponse(values[0],values[1]));
         } catch (error) {
+            delpoyToast('Location not found!', 'error');
             throw error;
         }
     }

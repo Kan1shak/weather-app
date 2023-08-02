@@ -77,8 +77,6 @@ h4:first-child {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 3fr;
     text-align: center;
-    background-color: rgba(6, 6, 6, 0.15);
-
 }
 
 .search-container {
@@ -217,6 +215,15 @@ h4:first-child {
     background-color: #ffffff22;
 }
 
+.bg-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(6, 6, 6, 0.2);
+    position: fixed;
+    top: 0;
+    z-index: -1;
+}
+
 @keyframes fade {
 	0% {
 		opacity: 1;
@@ -230,4 +237,76 @@ h4:first-child {
 	100% {
 		opacity: 0;
 	}
+}
+
+@media screen and (max-width: 768px) {
+    .text-container {
+        padding: 2rem 4vw;
+        grid-template-columns: 1fr;
+    }
+
+    .weather-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 1fr 3fr;
+    }
+
+    .weather-basic-data {
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
+        align-items: center;
+    }
+
+    .more-weather-data {
+        grid-row: 3 / 4;
+        grid-column: 1 / 2;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .box {
+        align-items: center;
+    }
+    .temp-icon-container img{
+        height: 6rem;
+    }
+
+    .feels-like {
+        font-size: 1rem;
+    }
+
+    .heading {
+        margin-bottom: 1rem;
+    }
+
+    .search-container {
+        max-height: 4rem;
+    }
+
+    .search-btn {
+        padding: 0.5rem 0.5rem;
+    }
+
+    .search-btn span {
+        font-size: 2rem;
+    }
+
+    .search-container {
+        padding: 0rem 0.25rem;
+    }
+
+    .search-input {
+        padding: 0rem 0.25rem 0rem 1rem;
+    }
+
+    .location {
+        font-size: 2.5rem;
+    }
+
+    .location + h3 {
+        font-size: 1.25rem;
+    }
+
+    [type="search"] {
+        font-size: 1.5rem;
+    }
+    
 }
