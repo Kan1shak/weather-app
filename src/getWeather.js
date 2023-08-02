@@ -15,7 +15,7 @@ const weatherApi = (() =>{
     }
 
     async function getCoords(location='london'){
-        const endpoint = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${API_KEY}`;
+        const endpoint = `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${API_KEY}`;
         let response = await fetch(endpoint, {mode:"cors"});
         response = await response.json();
         if (response.length === 0) {
